@@ -28,6 +28,13 @@ html, body
     max-width: 980px;
     padding: 0 10px;
     margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.tool
+{
+    margin-bottom: 16px;
 }
 
 .element
