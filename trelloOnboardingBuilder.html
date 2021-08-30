@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>360Tools - Trello board building helper for new joiners</title>
+    <link rel="stylesheet" type="text/css" href="./style/style.css">
+</head>
+<body>
+<div>
+<div id="app">
+    <div id="header">
+        <div class="container">
+            <a id="logo" href="index.html">360Tools</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="element form">
+            <h1>1 - Some pre-requisites</h1>
+            <p>Are you preparing a new padawan's arrival? Great, let's help you!</p>
+            <ol>
+                <li>First, ensure you already created their board, and get your .</li>
+                <li>Then <a target="_blank" href="https://docs.google.com/document/d/1HwaedNa861gkj93TaradW5n0MID8cbeamiU5SXCvX64/edit#heading=h.ijjo2dol5z6v">get your Trello API information</a> and store carefully your identifier and authentication token.</li>
+                <li>Go on to the following steps.</li>
+                <li>And enjoy!</li>
+            </ol>
+            <br>
+            <h1>2 - Your Trello API information</h1>
+            <p>This tool will comment on some Trello cards on your behalf, thus it needs the personal information you got in the pre-requisite step.
+                <br>These information are used but not stored in any way.
+                <br><span style="color:#bb0000; font-weight:bold">All the fields must be filled.</span>
+            </p>
+            <div class="form-wrapper">
+                <div class="form-field">
+                    <label for="trelloApiKey" class="field-name">Trello identifier :</label>
+                    <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="trelloApiKey">
+                </div>
+                <div class="form-field">
+                    <label for="trelloOAuth1" class="field-name">Authentication token :</label>
+                    <input id="trelloOAuth1" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd" v-model="trelloOAuth1">
+                </div>
+                <div class="form-field">
+                    <label for="hrCuPathsBoard" class="field-name">HR: CU Paths board :</label>
+                    <input id="hrCuPathsBoard" type="text" v-model="hrCuPathsBoard">
+                </div>
+                <p>Normally, you shoudn't have to change the HR: CU Paths board. If so, please speak out, it means that this board changed and so will this tool need to.</p>
+                <div class="form-field">
+                    <label for="learningPathCard" class="field-name">HR: CU Paths board :</label>
+                    <input id="learningPathCard" type="text" placeholder="https://trello.com/c/JRMYDj6m/1-read-me" v-model="learningPathCard">
+                </div>
+            </div>
+            <br>
+            <h1>3 - Let the magic happen</h1>
+            <button class="button wide with-margin" :class="{ disabled: ! isValid }" onclick="includeBasics()">
+                1 - Include the "basics" modules into the Learning Path
+            </button>
+            <button class="button wide with-margin" :class="{ disabled: ! isValid }" onclick="organizeLearningPath()">
+                2 - Automatically organize the Learning Path modules that have an indicated timeline
+            </button>
+            <div id="message"></div>
+        </div>
+        <br>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="./scripts/trelloOnboardingBuilder.js"></script>
+</body>
+</html>
