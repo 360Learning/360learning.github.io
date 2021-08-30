@@ -7,6 +7,7 @@ const includeCommand = "/targetfor";
 const basicsCardsSuffix = "my toto test";
 
 async function includeBasics() {
+    document.getElementById("message").innerText = "Including basics cards...";
     const allCardsOnCuPaths = await fetchCardsOnBoard(getHrCuPathsBoardId(), { trelloApiKey: getTrelloApiKey(), trelloOAuth1: getTrelloOAuth1() });
     const allBasicsCardIds = allCardsOnCuPaths
         .filter(({ name }) => name.trim().toLowerCase().endsWith(basicsCardsSuffix))
@@ -15,6 +16,7 @@ async function includeBasics() {
     for (const cardId of allBasicsCardIds) {
         await postComment(cardId, commentText, { trelloApiKey: getTrelloApiKey(), trelloOAuth1: getTrelloOAuth1() })
     }
+    document.getElementById("message").innerText = `Including ${allBasicsCardIds.length} basics cards with success!`;
 }
 function organizeLearningPath() {
     document.getElementById("message").innerText = "Not yet available, please be patient :)";
