@@ -2,9 +2,19 @@ String.prototype.cleanup = function() {
     return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-");
 };
 
+const includeCommand = "/targetfor";
+//const basicsCardsSuffix = "basics";
+const basicsCardsSuffix = "my toto test";
+
 async function includeBasics() {
     const allCardsOnCuPaths = await fetchCardsOnBoard(getHrCuPathsBoardId(), { trelloApiKey: getTrelloApiKey(), trelloOAuth1: getTrelloOAuth1() });
-    console.log(allCardsOnCuPaths.length);
+    const allBasicsCardIds = allCardsOnCuPaths
+        .filter(({ name }) => name.trim().toLowerCase().endsWith(basicsCardsSuffix))
+        .map(({ shortLink }) => shortLink);
+    const commentText = `${includeCommand} ${getLearningPathCard()}`;
+    for (const cardId of allBasicsCardIds) {
+        await postComment(cardId, commentText, { trelloApiKey: getTrelloApiKey(), trelloOAuth1: getTrelloOAuth1() })
+    }
 }
 function organizeLearningPath() {
     document.getElementById("message").innerText = "Not yet available, please be patient :)";
@@ -28,6 +38,9 @@ function getTrelloOAuth1() {
 }
 function getHrCuPathsBoard() {
     return document.getElementById("hrCuPathsBoard").value;
+}
+function getLearningPathCard() {
+    return document.getElementById("learningPathCard").value;
 }
 
 var app = new Vue({
