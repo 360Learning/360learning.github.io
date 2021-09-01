@@ -42,18 +42,18 @@
                     <label for="hrCuPathsBoard" class="field-name">HR: CU Paths board :</label>
                     <input id="hrCuPathsBoard" type="text" v-model="hrCuPathsBoard">
                 </div>
-                <p>Normally, you shoudn't have to change the HR: CU Paths board. If so, please speak out, it means that this board changed and so will this tool need to.</p>
+                <p><span style="color:#bb0000; font-weight:bold">Normally, you shoudn't have to change the HR: CU Paths board. If so, please speak out, it means that this board changed and so will this tool need to.</span></p>
                 <div class="form-field">
-                    <label for="learningPathCard" class="field-name">HR: CU Paths board :</label>
+                    <label for="learningPathCard" class="field-name">Url of the zConvexity readme card :</label>
                     <input id="learningPathCard" type="text" placeholder="https://trello.com/c/JRMYDj6m/1-read-me" v-model="learningPathCard">
                 </div>
             </div>
             <br>
             <h1>3 - Let the magic happen</h1>
-            <button class="button wide with-margin" :class="{ disabled: ! isValid }" onclick="includeBasics()">
+            <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" onclick="includeBasics()">
                 1 - Include the "basics" modules into the Learning Path
             </button>
-            <button class="button wide with-margin" :class="{ disabled: ! isValid }" onclick="organizeLearningPath()">
+            <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" onclick="organizeLearningPath()">
                 2 - Automatically organize the Learning Path modules that have an indicated timeline
             </button>
             <div id="message"></div>
@@ -63,6 +63,10 @@
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="./scripts/trello/api.js"></script>
+<script src="./scripts/trello/boards.js"></script>
+<script src="./scripts/trello/cards.js"></script>
 <script src="./scripts/trelloOnboardingBuilder.js"></script>
 </body>
 </html>
