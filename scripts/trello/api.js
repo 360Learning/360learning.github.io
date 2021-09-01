@@ -1,16 +1,22 @@
-async function get(relativeUrl, params, { trelloApiKey, trelloOAuth1 } = {}) {
-    const res = await axios.get(buildUrlWithParams(trelloApiKey, trelloOAuth1, relativeUrl, params));
-    return res.data;
-}
+class TrelloClient {
+    constructor({ trelloApiKey, trelloOAuth1 }) {
+        this.trelloApiKey = trelloApiKey;
+        this.trelloOAuth1 = trelloOAuth1;
+    }
+    async get(relativeUrl, params = {}) {
+        const res = await axios.get(buildUrlWithParams(this.trelloApiKey, this.trelloOAuth1, relativeUrl, params));
+        return res.data;
+    }
 
-async function post(relativeUrl, params, { trelloApiKey, trelloOAuth1 } = {}) {
-    const res = await axios.post(buildUrlWithParams(trelloApiKey, trelloOAuth1, relativeUrl, params));
-    return res.data;
-}
+    async post(relativeUrl, params = {}) {
+        const res = await axios.post(buildUrlWithParams(this.trelloApiKey, this.trelloOAuth1, relativeUrl, params));
+        return res.data;
+    }
 
-async function put(relativeUrl, params, { trelloApiKey, trelloOAuth1 } = {}) {
-    const res = await axios.put(buildUrlWithParams(trelloApiKey, trelloOAuth1, relativeUrl, params));
-    return res.data;
+    async put(relativeUrl, params = {}) {
+        const res = await axios.put(buildUrlWithParams(this.trelloApiKey, this.trelloOAuth1, relativeUrl, params));
+        return res.data;
+    }
 }
 
 function buildUrlWithParams(trelloApiKey, trelloOAuth1, relativeUrl, params) {
