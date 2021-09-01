@@ -21,10 +21,6 @@ class TrelloClient {
 
 function buildUrlWithParams(trelloApiKey, trelloOAuth1, relativeUrl, params) {
     const rawUrl = `https://api.trello.com/1/${relativeUrl}`;
-    return `${rawUrl}?${computeEncodedUrlParams({ ...params, key: trelloApiKey, token: trelloOAuth1 })}`;
-}
-
-function computeEncodedUrlParams(urlParams) {
-    const encodedParams = Object.keys(urlParams).map(key => `${key}=${encodeURI(urlParams[key])}`);
-    return encodedParams.join("&");
+    const urlParams = new URLSearchParams({ ...params, key: trelloApiKey, token: trelloOAuth1 });
+    return `${rawUrl}?${urlParams}`;
 }
