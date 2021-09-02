@@ -50,13 +50,13 @@
             </div>
             <br>
             <h1>3 - Let the magic happen</h1>
-            <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" onclick="includeBasics()">
+            <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" @click="includeBasics()">
                 1 - Include the "basics" modules into the Learning Path
             </button>
-            <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" onclick="organizeLearningPath()">
+            <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" @click="organizeLearningPath()">
                 2 - Automatically organize the Learning Path modules that have an indicated timeline
             </button>
-            <div id="message"></div>
+            <div id="message">{{ message }}</div>
         </div>
         <br>
     </div>
