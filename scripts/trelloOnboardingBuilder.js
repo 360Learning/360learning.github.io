@@ -6,44 +6,22 @@ const includeCommand = "/targetfor";
 //const basicsCardsSuffix = "basics";
 const basicsCardsSuffix = "my toto test";
 
-async function includeBasics() {
-    document.getElementById("message").innerText = "Including basics cards...";
-    const allCardsOnCuPaths = await fetchCardsOnBoard(getHrCuPathsBoardId(), { trelloApiKey: getTrelloApiKey(), trelloOAuth1: getTrelloOAuth1() });
-    const allBasicsCardIds = allCardsOnCuPaths
-        .filter(({ name }) => name.trim().toLowerCase().endsWith(basicsCardsSuffix))
-        .map(({ shortLink }) => shortLink);
-    const commentText = `${includeCommand} ${getLearningPathCard()}`;
-    for (const cardId of allBasicsCardIds) {
-        await postComment(cardId, commentText, { trelloApiKey: getTrelloApiKey(), trelloOAuth1: getTrelloOAuth1() })
-    }
-    document.getElementById("message").innerText = `Including ${allBasicsCardIds.length} basics cards with success!`;
-}
-function organizeLearningPath() {
-    document.getElementById("message").innerText = "Not yet available, please be patient :)";
-}
-
-function getHrCuPathsBoardId() {
-    const hrCuPathsBoard = getHrCuPathsBoard();
-    if (! hrCuPathsBoard) { return ""; }
-
-    const boardIdRegex = /https:\/\/trello\.com\/b\/([^\/]+)\/.*/;
-    const boardIdRegexMatches = boardIdRegex.exec(hrCuPathsBoard);
-    if (! boardIdRegexMatches) { return ""; }
-
-    return boardIdRegexMatches[1];
-}
-function getTrelloApiKey() {
-    return document.getElementById("trelloApiKey").value;
-}
-function getTrelloOAuth1() {
-    return document.getElementById("trelloOAuth1").value;
-}
-function getHrCuPathsBoard() {
-    return document.getElementById("hrCuPathsBoard").value;
-}
-function getLearningPathCard() {
-    return document.getElementById("learningPathCard").value;
-}
+const timelineInformationMapping = {
+    "DAY 1": 0,
+    "DAY 2": 1,
+    "DAY 3": 2,
+    "DAY 4": 3,
+    "DAY 5": 4,
+    "WEEK 1": 5,
+    "WEEK 2": 6,
+    "WEEK 3": 7,
+    "WEEK 4": 8,
+    "WEEK 5": 9,
+    "MONTH 1": 10,
+    "MONTH 2": 11,
+    "MONTH 3": 12,
+    "MONTH 4": 13
+};
 
 var app = new Vue({
     el: '#app',
@@ -51,11 +29,104 @@ var app = new Vue({
         trelloApiKey: "",
         trelloOAuth1: "",
         hrCuPathsBoard: "https://trello.com/b/uKPiQQ7R/hr-cu-paths",
-        learningPathCard: ""
+        learningPathCard: "",
+        message: ""
     },
     computed: {
         isValid() {
             return !! this.trelloApiKey && !! this.trelloOAuth1 && !! this.hrCuPathsBoard && !! this.learningPathCard;
+        },
+        hrCuPathsBoardId() {
+            if (! this.hrCuPathsBoard) { return ""; }
+
+            const boardIdRegex = /https:\/\/trello\.com\/b\/([^\/]+)\/.*/;
+            const boardIdRegexMatches = boardIdRegex.exec(this.hrCuPathsBoard);
+            if (! boardIdRegexMatches) { return ""; }
+
+            return boardIdRegexMatches[1];
+        },
+        learningPathCardId() {
+            if (! this.learningPathCard) { return ""; }
+
+            const cardIdRegex = /https:\/\/trello\.com\/c\/([^\/]+)\/.*/;
+            const cardIdRegexMatches = cardIdRegex.exec(this.learningPathCard);
+            if (! cardIdRegexMatches) { return ""; }
+
+            return cardIdRegexMatches[1];
+        },
+    },
+    methods: {
+        async includeBasics() {
+            this.message = "Including basics cards...";
+            const allCardsOnCuPaths = await fetchCardsOnBoard(this.hrCuPathsBoardId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
+            const allBasicsCardIds = allCardsOnCuPaths
+                .filter(({ name }) => name.trim().toLowerCase().endsWith(basicsCardsSuffix))
+                .map(({ shortLink }) => shortLink);
+            const commentText = `${includeCommand} ${this.learningPathCard}`;
+            for (const cardId of allBasicsCardIds) {
+                await postComment(cardId, commentText, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 })
+            }
+            this.message = `Including ${allBasicsCardIds.length} basics cards with success!`;
+        },
+        async organizeLearningPath() {
+            this.message = "Reorganizing Learning Path...";
+            const { idList: learningPathListId } = await getCard(this.learningPathCardId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
+            const allCardsInLearningPath = await fetchCardsInList(learningPathListId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
+            const initialTimelineCardPosition = computeInitialTimelineCardPositions();
+            const reorganizedCardsCount = await reorganizeCards(initialTimelineCardPosition, this.trelloApiKey, this.trelloOAuth1);
+            this.message = `Reorganized ${reorganizedCardsCount} cards in the Learning Path!`;
+
+            function computeInitialTimelineCardPositions() {
+                const timelineCardPosition = {};
+                allCardsInLearningPath
+                    .filter(card => Object.keys(timelineInformationMapping).includes(card.name))
+                    .forEach(card => timelineCardPosition[timelineInformationMapping[card.name]] = card.pos);
+                return timelineCardPosition;
+            }
+            async function reorganizeCards(timelineCardPosition, trelloApiKey, trelloOAuth1) {
+                const cardsToReorganizeWithTimelineInformation = computeCardsThatCanBeReorganized();
+                for (const cardWithTimelineInformation of cardsToReorganizeWithTimelineInformation) {
+                    const expectedCardPositionInList = timelineCardPosition[cardWithTimelineInformation.timelineInformationIndex] + 1;
+                    incrementPositionsForTimelineInformationAfter(cardWithTimelineInformation.timelineInformationIndex, timelineCardPosition);
+                    await updateCard(cardWithTimelineInformation.id, { pos: expectedCardPositionInList }, { trelloApiKey, trelloOAuth1 });
+                }
+                return cardsToReorganizeWithTimelineInformation.length;
+
+                function computeCardsThatCanBeReorganized() {
+                    return allCardsInLearningPath
+                        .filter(card => canMoveCardInSpecificTimeline(card.name))
+                        .map(card => {
+                            const timelineInformation = getTimelineInformation(card.name);
+                            let timelineInformationIndex = timelineInformationMapping[timelineInformation];
+                            return { ...card, timelineInformationIndex };
+                        })
+                        .filter(({ timelineInformationIndex }) => Object.keys(timelineCardPosition).includes(`${timelineInformationIndex}`))
+                }
+            }
+            function canMoveCardInSpecificTimeline(name) {
+                return hasDayInformation() || hasWeekInformation() || hasMonthInformation();
+
+                function hasDayInformation() {
+                    return /.+\[DAY \d]/.test(name);
+                }
+                function hasWeekInformation() {
+                    return /.+\[WEEK \d]/.test(name);
+                }
+                function hasMonthInformation() {
+                    return /.+\[MONTH \d]/.test(name);
+                }
+            }
+            function getTimelineInformation(name) {
+                const timelineInformationRegex = /.+\[((DAY|WEEK|MONTH) \d)]/;
+                return timelineInformationRegex.exec(name)[1];
+            }
+            function incrementPositionsForTimelineInformationAfter(timelineInformationIndex, timelineCardPosition) {
+                for(const index of Object.keys(timelineCardPosition)) {
+                    if (timelineInformationIndex > index) { continue; }
+
+                    timelineCardPosition[index]++;
+                }
+            }
         }
     }
 });
