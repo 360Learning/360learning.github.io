@@ -78,28 +78,30 @@ var app = new Vue({
 
             function computeInitialTimelineCardPositions() {
                 const timelineCardPosition = {};
-                for (const card of allCardsInLearningPath) {
-                    if (! Object.keys(timelineInformationMapping).includes(card.name)) { continue; }
-
-                    timelineCardPosition[timelineInformationMapping[card.name]] = card.pos;
-                }
+                allCardsInLearningPath
+                    .filter(card => Object.keys(timelineInformationMapping).includes(card.name))
+                    .forEach(card => timelineCardPosition[timelineInformationMapping[card.name]] = card.pos);
                 return timelineCardPosition;
             }
             async function reorganizeCards(timelineCardPosition, trelloApiKey, trelloOAuth1) {
-                let reorganizedCardsCount = 0;
-                for (const card of allCardsInLearningPath) {
-                    if (! canMoveCardInSpecificTimeline(card.name)) { continue; }
-
-                    const timelineInformation = getTimelineInformation(card.name);
-                    let timelineInformationIndex = timelineInformationMapping[timelineInformation];
-                    if (! Object.keys(timelineCardPosition).includes(`${timelineInformationIndex}`)) { continue; }
-
-                    const expectedCardPositionInList = timelineCardPosition[timelineInformationIndex] + 1;
-                    incrementPositionsForTimelineInformationAfter(timelineInformationIndex, timelineCardPosition);
-                    await updateCard(card.id, { pos: expectedCardPositionInList }, { trelloApiKey, trelloOAuth1 });
-                    reorganizedCardsCount++;
+                const cardsToReorganizeWithTimelineInformation = computeCardsThatCanBeReorganized();
+                for (const cardWithTimelineInformation of cardsToReorganizeWithTimelineInformation) {
+                    const expectedCardPositionInList = timelineCardPosition[cardWithTimelineInformation.timelineInformationIndex] + 1;
+                    incrementPositionsForTimelineInformationAfter(cardWithTimelineInformation.timelineInformationIndex, timelineCardPosition);
+                    await updateCard(cardWithTimelineInformation.id, { pos: expectedCardPositionInList }, { trelloApiKey, trelloOAuth1 });
                 }
-                return reorganizedCardsCount;
+                return cardsToReorganizeWithTimelineInformation.length;
+
+                function computeCardsThatCanBeReorganized() {
+                    return allCardsInLearningPath
+                        .filter(card => canMoveCardInSpecificTimeline(card.name))
+                        .map(card => {
+                            const timelineInformation = getTimelineInformation(card.name);
+                            let timelineInformationIndex = timelineInformationMapping[timelineInformation];
+                            return { ...card, timelineInformationIndex };
+                        })
+                        .filter(({ timelineInformationIndex }) => Object.keys(timelineCardPosition).includes(`${timelineInformationIndex}`))
+                }
             }
             function canMoveCardInSpecificTimeline(name) {
                 return hasDayInformation() || hasWeekInformation() || hasMonthInformation();
