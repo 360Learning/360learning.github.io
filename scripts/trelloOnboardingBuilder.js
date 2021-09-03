@@ -28,6 +28,15 @@ var app = new Vue({
 
             return boardIdRegexMatches[1];
         },
+        learningPathCardId() {
+            if (! this.learningPathCard) { return ""; }
+
+            const cardIdRegex = /https:\/\/trello\.com\/c\/([^\/]+)\/.*/;
+            const cardIdRegexMatches = cardIdRegex.exec(this.learningPathCard);
+            if (! cardIdRegexMatches) { return ""; }
+
+            return cardIdRegexMatches[1];
+        },
     },
     methods: {
         async includeBasics() {
@@ -42,8 +51,10 @@ var app = new Vue({
             }
             this.message = `Including ${allBasicsCardIds.length} basics cards with success!`;
         },
-        organizeLearningPath() {
-            this.message = "Not yet available, please be patient :)";
+        async organizeLearningPath() {
+            this.message = "Reorganizing Learning Path...";
+            const { idList: learningPathListId } = await getCard(this.learningPathCardId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
+            const allCardsInLearningPath = await fetchCardsInList(learningPathListId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
         }
     }
 });
