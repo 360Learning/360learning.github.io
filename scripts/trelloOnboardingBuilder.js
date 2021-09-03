@@ -73,6 +73,8 @@ var app = new Vue({
             const { idList: learningPathListId } = await getCard(this.learningPathCardId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
             const allCardsInLearningPath = await fetchCardsInList(learningPathListId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
             const initialTimelineCardPosition = computeInitialTimelineCardPositions();
+            const reorganizedCardsCount = await reorganizeCards(initialTimelineCardPosition, this.trelloApiKey, this.trelloOAuth1);
+            this.message = `Reorganized ${reorganizedCardsCount} cards in the Learning Path!`;
 
             function computeInitialTimelineCardPositions() {
                 const timelineCardPosition = {};
@@ -82,6 +84,46 @@ var app = new Vue({
                     timelineCardPosition[timelineInformationMapping[card.name]] = card.pos;
                 }
                 return timelineCardPosition;
+            }
+            async function reorganizeCards(timelineCardPosition, trelloApiKey, trelloOAuth1) {
+                let reorganizedCardsCount = 0;
+                for (const card of allCardsInLearningPath) {
+                    if (! canMoveCardInSpecificTimeline(card.name)) { continue; }
+
+                    const timelineInformation = getTimelineInformation(card.name);
+                    let timelineInformationIndex = timelineInformationMapping[timelineInformation];
+                    if (! Object.keys(timelineCardPosition).includes(`${timelineInformationIndex}`)) { continue; }
+
+                    const expectedCardPositionInList = timelineCardPosition[timelineInformationIndex] + 1;
+                    incrementPositionsForTimelineInformationAfter(timelineInformationIndex, timelineCardPosition);
+                    await updateCard(card.id, { pos: expectedCardPositionInList }, { trelloApiKey, trelloOAuth1 });
+                    reorganizedCardsCount++;
+                }
+                return reorganizedCardsCount;
+            }
+            function canMoveCardInSpecificTimeline(name) {
+                return hasDayInformation() || hasWeekInformation() || hasMonthInformation();
+
+                function hasDayInformation() {
+                    return /.+\[DAY \d]/.test(name);
+                }
+                function hasWeekInformation() {
+                    return /.+\[WEEK \d]/.test(name);
+                }
+                function hasMonthInformation() {
+                    return /.+\[MONTH \d]/.test(name);
+                }
+            }
+            function getTimelineInformation(name) {
+                const timelineInformationRegex = /.+\[((DAY|WEEK|MONTH) \d)]/;
+                return timelineInformationRegex.exec(name)[1];
+            }
+            function incrementPositionsForTimelineInformationAfter(timelineInformationIndex, timelineCardPosition) {
+                for(const index of Object.keys(timelineCardPosition)) {
+                    if (timelineInformationIndex > index) { continue; }
+
+                    timelineCardPosition[index]++;
+                }
             }
         }
     }
