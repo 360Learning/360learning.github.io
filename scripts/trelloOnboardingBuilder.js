@@ -6,6 +6,23 @@ const includeCommand = "/targetfor";
 //const basicsCardsSuffix = "basics";
 const basicsCardsSuffix = "my toto test";
 
+const timelineInformationMapping = {
+    "DAY 1": 0,
+    "DAY 2": 1,
+    "DAY 3": 2,
+    "DAY 4": 3,
+    "DAY 5": 4,
+    "WEEK 1": 5,
+    "WEEK 2": 6,
+    "WEEK 3": 7,
+    "WEEK 4": 8,
+    "WEEK 5": 9,
+    "MONTH 1": 10,
+    "MONTH 2": 11,
+    "MONTH 3": 12,
+    "MONTH 4": 13
+};
+
 var app = new Vue({
     el: '#app',
     data: {
@@ -55,6 +72,17 @@ var app = new Vue({
             this.message = "Reorganizing Learning Path...";
             const { idList: learningPathListId } = await getCard(this.learningPathCardId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
             const allCardsInLearningPath = await fetchCardsInList(learningPathListId, { trelloApiKey: this.trelloApiKey, trelloOAuth1: this.trelloOAuth1 });
+            const initialTimelineCardPosition = computeInitialTimelineCardPositions();
+
+            function computeInitialTimelineCardPositions() {
+                const timelineCardPosition = {};
+                for (const card of allCardsInLearningPath) {
+                    if (! Object.keys(timelineInformationMapping).includes(card.name)) { continue; }
+
+                    timelineCardPosition[timelineInformationMapping[card.name]] = card.pos;
+                }
+                return timelineCardPosition;
+            }
         }
     }
 });
