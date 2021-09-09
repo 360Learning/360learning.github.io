@@ -56,10 +56,14 @@
             <p>2 - Include the modules that are related to the newcomer's function. In the future, this might be automated as well (be patient ^^), but right now it's still a manual action.
                 <br>Don't forget to wait for each of these modules to be included in the Learning Path before applying the next step of magic below :)
             </p>
+            <p>3 - [Optional] Feel free to add/update the timeline indication to the name of the module cards already in the Learning Path.
+                <br>This indication should be in the format [DAY N], [WEEK N] or [MONTH N] as for some already.
+            </p>
             <button class="button wide with-margin" :class="{ disabled: ! isValid }" :disabled="! isValid" @click="organizeLearningPath()">
-                3 - Automatically organize the Learning Path modules that have an indicated timeline
+                4 - Automatically organize the Learning Path modules that have an indicated timeline
             </button>
-            <p>4 - Manually organize the modules that didn't have an indicated timeline.</p>
+            <p>5 - Manually finalize the organization of the modules cards.</p>
+            <p>6 - Enjoy a cup of tea/coffee with the time you saved =)</p>
             <div>{{ message }}</div>
         </div>
         <br>
