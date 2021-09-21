@@ -122,7 +122,7 @@ var app = new Vue({
             }
             function getTimelineInformation(name) {
                 const timelineInformationRegex = /.+\[((DAY|WEEK|MONTH) \d)]/i;
-                return timelineInformationRegex.exec(name)[1];
+                return timelineInformationRegex.exec(name)[1].toUpperCase();
             }
             function incrementPositionsForTimelineInformationAfter(timelineInformationIndex, timelineCardPosition) {
                 for(const index of Object.keys(timelineCardPosition)) {
