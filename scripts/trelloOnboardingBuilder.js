@@ -111,17 +111,17 @@ var app = new Vue({
                 return hasDayInformation() || hasWeekInformation() || hasMonthInformation();
 
                 function hasDayInformation() {
-                    return /.+\[DAY \d]/.test(name);
+                    return /.+\[DAY \d]/i.test(name);
                 }
                 function hasWeekInformation() {
-                    return /.+\[WEEK \d]/.test(name);
+                    return /.+\[WEEK \d]/i.test(name);
                 }
                 function hasMonthInformation() {
-                    return /.+\[MONTH \d]/.test(name);
+                    return /.+\[MONTH \d]/i.test(name);
                 }
             }
             function getTimelineInformation(name) {
-                const timelineInformationRegex = /.+\[((DAY|WEEK|MONTH) \d)]/;
+                const timelineInformationRegex = /.+\[((DAY|WEEK|MONTH) \d)]/i;
                 return timelineInformationRegex.exec(name)[1];
             }
             function incrementPositionsForTimelineInformationAfter(timelineInformationIndex, timelineCardPosition) {
@@ -132,7 +132,7 @@ var app = new Vue({
                 }
             }
             function removeTimelineInformation(name) {
-                const timelineInformationRegex = /(.+)\[(DAY|WEEK|MONTH) \d]/;
+                const timelineInformationRegex = /(.+)\[(DAY|WEEK|MONTH) \d]/i;
                 return timelineInformationRegex.exec(name)[1].trim();
             }
         }
