@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>360Tools - Trello comments dashboard</title>
+        <link rel="stylesheet" type="text/css" href="./style/style.css">
+    </head>
+    <body>
+        <div>
+            <div id="app">
+                <div id="header">
+                    <div class="container">
+                        <a id="logo" href="index.html">360Tools</a>
+                    </div>
+                </div>
+                <div class="container">
+                    <h1>Trello comments dashboard</h1>
+
+
+                    <div class="element form">
+
+                        It's Performance Reviews time, and you want to see all the comments made by your reviewee during the period? 🕵️
+                        <br>You're desperately looking for a comment made by someone in particular, but the Trello search won't let you find it? 👺
+
+                        <hr>
+
+                        <br>To get started, get your <a target="_blank" :href="trelloCredentialsHelperFile">Trello API information</a> and store carefully your identifier and authentication token.
+                        <br>This tool will fetch your colleague's Trello comments on your behalf.
+                        <br>Don't worry, the information will not be stored by this website in any way.
+
+                        <hr>
+
+                        <div class="form-wrapper">
+                            <div class="form-field">
+                                <label for="trelloApiKey" class="field-name">Trello identifier:</label>
+                                <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
+                            </div>
+                            <div class="form-field">
+                                <label for="trelloOAuth1" class="field-name">Authentication token:</label>
+                                <input id="trelloOAuth1" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloOAuth1">
+                            </div>
+                            <div class="form-field">
+                                <label for="username" class="field-name">Your colleague's username:</label>
+                                <input id="username" type="text" placeholder="thomasrice" v-model="username" @keyup.enter="fetchComments()">
+                            </div>
+                        </div>
+                        <br>
+                        <button
+                                class="button wide"
+                                :class="{ disabled: ! isValid }"
+                                :disabled="! isValid"
+                                @click="fetchComments()"
+                        >
+                            Fetch comments
+                        </button>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="./scripts/trelloCommentsDashboard.js"></script>
+    </body>
+</html>
