@@ -28,6 +28,10 @@ td {
     width: 200px;
 }
 
+.rendered-markdown p {
+    font-size: inherit;
+}
+
 .sorting-arrows {
     float: right;
 }

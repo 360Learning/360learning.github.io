@@ -102,7 +102,7 @@
                                         <td>{{ comment.date }}</td>
                                         <td>{{ comment.board }}</td>
                                         <td><a :href="comment.link" target="_blank">{{ comment.card }}</a></td>
-                                        <td v-html="comment.text"></td>
+                                        <td class="rendered-markdown" v-html="comment.text"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -115,6 +115,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.3.2/markdown-it.min.js"></script>
         <script src="./scripts/trello/api.js"></script>
         <script src="./scripts/trello/actions.js"></script>
         <script src="./scripts/trelloCommentsDashboard.js"></script>

@@ -54,12 +54,15 @@ function parseComments(comments) {
             board: comment.data.board.name,
             card: comment.data.card.name,
             date: comment.date.slice(0, 10),
-            text: comment.data.text,
+            text: buildCommentText(comment.data.text),
             link: buildLinkToComment(comment)
         };
     }
 }
 
+function buildCommentText(markdown) {
+    return markdownit().render(markdown);
+}
 function buildLinkToComment(comment) {
     return `${TRELLO_BASE_URL}/c/${comment.data.card.shortLink}#action-${comment.id}`;
 }
