@@ -27,3 +27,11 @@ td {
 .column-card {
     width: 200px;
 }
+
+.sorting-arrows {
+    float: right;
+}
+
+.sorting-arrows > span {
+    cursor: pointer;
+}

@@ -6,6 +6,7 @@ new Vue({
     data: {
         comments: null,
         error: null,
+        sort: { field: "date", ascending: false },
         trelloCredentialsHelperFile: TRELLO_CREDENTIALS_HELPER_FILE,
         credentials: {
             trelloApiKey: "",
@@ -25,9 +26,21 @@ new Vue({
             try {
                 const comments = await fetchUserComments(this.username, {}, this.credentials);
                 this.comments = parseComments(comments);
+                this.sortComments();
             } catch (error) {
                 this.error = error.message;
             }
+        },
+        sortComments() {
+            const field = this.sort.field;
+            const ascendingFactor = this.sort.ascending ? 1 : -1;
+            this.comments.sort((comment1, comment2) => {
+                return comment1[field].localeCompare(comment2[field]) * ascendingFactor;
+            });
+        },
+        updateSort(sort) {
+            this.sort = sort;
+            this.sortComments();
         }
     }
 });

@@ -75,12 +75,24 @@
                                     <tr>
                                         <th class="column-date">
                                             Date
+                                            <div class="sorting-arrows">
+                                                <span @click="updateSort({ field: 'date', ascending: true })">⬆️</span>
+                                                <span @click="updateSort({ field: 'date', ascending: false })">⬇️</span>
+                                            </div>
                                         </th>
                                         <th class="column-card">
                                             Board
+                                            <div class="sorting-arrows">
+                                                <span @click="updateSort({ field: 'board', ascending: true })">⬆️</span>
+                                                <span @click="updateSort({ field: 'board', ascending: false })">⬇️</span>
+                                            </div>
                                         </th>
                                         <th class="column-card">
                                             Card
+                                            <div class="sorting-arrows">
+                                                <span @click="updateSort({ field: 'card', ascending: true })">⬆️</span>
+                                                <span @click="updateSort({ field: 'card', ascending: false })">⬇️</span>
+                                            </div>
                                         </th>
                                         <th class="column-comment">Comment</th>
                                     </tr>
