@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>360Tools - Trello comments dashboard</title>
         <link rel="stylesheet" type="text/css" href="./style/style.css">
+        <link rel="stylesheet" type="text/css" href="./style/trelloCommentsDashboard.css">
     </head>
     <body>
         <div>
@@ -53,6 +54,47 @@
                         >
                             Fetch comments
                         </button>
+                        <br>
+
+                        <template v-if="error">
+                            An error occurred: <strong>{{ error }}</strong>
+                            <br>
+                            <template v-if="error.includes('404')">
+                                The username you entered may be incorrect.
+                            </template>
+                            <template v-else-if="error.includes('401')">
+                                The identifier or token you entered may be incorrect.
+                            </template>
+                        </template>
+
+                        <div v-if="comments">
+                            <h2>Results ({{ comments.length }} comments found)</h2>
+
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="column-date">
+                                            Date
+                                        </th>
+                                        <th class="column-card">
+                                            Board
+                                        </th>
+                                        <th class="column-card">
+                                            Card
+                                        </th>
+                                        <th class="column-comment">Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="comment in comments">
+                                        <td>{{ comment.date }}</td>
+                                        <td>{{ comment.board }}</td>
+                                        <td><a :href="comment.link" target="_blank">{{ comment.card }}</a></td>
+                                        <td v-html="comment.text"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <br>
                 </div>
@@ -60,6 +102,9 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="./scripts/trello/api.js"></script>
+        <script src="./scripts/trello/actions.js"></script>
         <script src="./scripts/trelloCommentsDashboard.js"></script>
     </body>
 </html>
