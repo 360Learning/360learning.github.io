@@ -99,10 +99,13 @@ input, select
 {
     padding: 9px;
     border: 1px solid #eeeeee;
-    width: 340px;
     border-radius: 4px;
     margin: 2px 0;
     box-sizing: border-box;
+}
+
+input:not([type=checkbox]) {
+    width: 340px;
 }
 
 input:focus, select:focus

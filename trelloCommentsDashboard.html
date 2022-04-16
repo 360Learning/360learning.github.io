@@ -31,7 +31,7 @@
 
                         <hr>
 
-                        <div class="form-wrapper">
+                        <div class="form-wrapper direction-column">
                             <div class="form-field">
                                 <label for="trelloApiKey" class="field-name">Trello identifier:</label>
                                 <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
@@ -43,6 +43,39 @@
                             <div class="form-field">
                                 <label for="username" class="field-name">Your colleague's username:</label>
                                 <input id="username" type="text" placeholder="thomasrice" v-model="username" @keyup.enter="fetchComments()">
+                            </div>
+
+                            <h2>Settings</h2>
+
+                            <div class="form-field">
+                                <label for="since" class="field-name">Start date</label>
+                                <input id="since" type="date" placeholder="YYYY-MM-DD" v-model="options.since">
+                                <span>(included)</span>
+                            </div>
+                            <div class="form-field">
+                                <label for="before" class="field-name">End date</label>
+                                <input id="before" type="date" placeholder="YYYY-MM-DD" v-model="options.before">
+                                <span>(excluded)</span>
+                            </div>
+                            <div class="form-field">
+                                <label for="limit" class="field-name">Limit to N comments?</label>
+                                <input id="limit" type="number" placeholder="100" v-model="options.limit">
+                                <span>(1000 is the maximum allowed by Trello)</span>
+                            </div>
+                            <br>
+                            <div class="form-field">
+                                <input id="excludeScopes" type="checkbox" v-model="options.excludedBoards.scopes">
+                                <label for="excludeScopes" class="field-name">Exclude <em>Scopes</em> board?</label>
+                            </div>
+                            <br>
+                            <div class="form-field">
+                                <input id="excludeHRCUPaths" type="checkbox" v-model="options.excludedBoards.HRCUPaths">
+                                <label for="excludeHRCUPaths" class="field-name">Exclude <em>HR: CU Paths</em> board?</label>
+                            </div>
+                            <br>
+                            <div class="form-field">
+                                <input id="excludeZConvexity" type="checkbox" v-model="options.excludedBoards.zConvexity">
+                                <label for="excludeZConvexity" class="field-name">Exclude <em>zConvexity</em> boards?</label>
                             </div>
                         </div>
                         <br>
@@ -116,6 +149,7 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.3.2/markdown-it.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
         <script src="./scripts/trello/api.js"></script>
         <script src="./scripts/trello/actions.js"></script>
         <script src="./scripts/trelloCommentsDashboard.js"></script>

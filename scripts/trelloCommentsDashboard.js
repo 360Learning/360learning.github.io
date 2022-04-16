@@ -1,10 +1,23 @@
 const TRELLO_BASE_URL = "https://trello.com";
 const TRELLO_CREDENTIALS_HELPER_FILE = "https://docs.google.com/document/d/1HwaedNa861gkj93TaradW5n0MID8cbeamiU5SXCvX64/edit#heading=h.ijjo2dol5z6v"
+const SCOPES_BOARD_NAME = "2. Scopes";
+const HR_CU_PATHS_BOARD_NAME = "HR: CU Paths";
+const ZCONVEXITY_BOARDS_PREFIX = "zConvexity";
 
 new Vue({
     el: '#app',
     data: {
         comments: null,
+        options: {
+            before: getStartOfCurrentQuarter(),
+            since: getStartOfPreviousQuarter(),
+            limit: 1000,
+            excludedBoards: {
+                scopes: true,
+                HRCUPaths: true,
+                zConvexity: true
+            },
+        },
         error: null,
         sort: { field: "date", ascending: false },
         trelloCredentialsHelperFile: TRELLO_CREDENTIALS_HELPER_FILE,
@@ -20,12 +33,19 @@ new Vue({
         }
     },
     methods: {
+        buildOptions() {
+            return {
+                limit: Math.min(this.options.limit ?? 1000, 1000),
+                ...(this.options.since ? { since: this.options.since } : {}),
+                ...(this.options.before ? { before: this.options.before } : {})
+            }
+        },
         async fetchComments() {
             this.comments = null;
             this.error = null;
             try {
-                const comments = await fetchUserComments(this.username, {}, this.credentials);
-                this.comments = parseComments(comments);
+                const comments = await fetchUserComments(this.username, this.buildOptions(), this.credentials);
+                this.comments = parseComments(comments, this.options);
                 this.sortComments();
             } catch (error) {
                 this.error = error.message;
@@ -45,10 +65,18 @@ new Vue({
     }
 });
 
-function parseComments(comments) {
+function parseComments(comments, options) {
     return comments
+        .filter(ignoreExcludedBoards)
         .map(parseComment);
 
+    function ignoreExcludedBoards(comment) {
+        const boardName = comment.data.board.name;
+        if (options.excludedBoards.scopes && boardName === SCOPES_BOARD_NAME) { return false; }
+        if (options.excludedBoards.HRCUPaths && boardName === HR_CU_PATHS_BOARD_NAME) { return false; }
+        if (options.excludedBoards.zConvexity && boardName.startsWith(ZCONVEXITY_BOARDS_PREFIX)) { return false; }
+        return true;
+    }
     function parseComment(comment) {
         return {
             board: comment.data.board.name,
@@ -58,6 +86,13 @@ function parseComments(comments) {
             link: buildLinkToComment(comment)
         };
     }
+}
+
+function getStartOfPreviousQuarter() {
+    return moment().startOf("quarter").subtract(3, "months").format("YYYY-MM-DD");
+}
+function getStartOfCurrentQuarter() {
+    return moment().startOf("quarter").format("YYYY-MM-DD");
 }
 
 function buildCommentText(markdown) {
