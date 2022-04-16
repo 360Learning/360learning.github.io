@@ -20,6 +20,7 @@ new Vue({
             truncationLength: 5
         },
         error: null,
+        loading: false,
         sort: { field: "date", ascending: false },
         trelloCredentialsHelperFile: TRELLO_CREDENTIALS_HELPER_FILE,
         credentials: {
@@ -29,6 +30,9 @@ new Vue({
         username: ""
     },
     computed: {
+        isSubmitButtonDisabled() {
+            return ! this.isValid || this.loading;
+        },
         isValid() {
             return !! this.credentials.trelloApiKey && !! this.credentials.trelloOAuth1 && !! this.username;
         }
@@ -44,12 +48,15 @@ new Vue({
         async fetchComments() {
             this.comments = null;
             this.error = null;
+            this.loading = true;
             try {
                 const comments = await fetchUserComments(this.username, this.buildOptions(), this.credentials);
                 this.comments = parseComments(comments, this.options);
                 this.sortComments();
             } catch (error) {
                 this.error = error.message;
+            } finally {
+                this.loading = false;
             }
         },
         sortComments() {

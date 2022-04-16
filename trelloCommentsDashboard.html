@@ -86,11 +86,12 @@
                         <br>
                         <button
                                 class="button wide"
-                                :class="{ disabled: ! isValid }"
-                                :disabled="! isValid"
+                                :class="{ disabled: isSubmitButtonDisabled }"
+                                :disabled="isSubmitButtonDisabled"
                                 @click="fetchComments()"
                         >
-                            Fetch comments
+                            <template v-if="loading">Fetching comments...</template>
+                            <template v-else>Fetch comments</template>
                         </button>
                         <br>
 
