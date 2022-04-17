@@ -17,6 +17,7 @@ new Vue({
                 HRCUPaths: true,
                 zConvexity: true
             },
+            truncationLength: 5
         },
         error: null,
         sort: { field: "date", ascending: false },
@@ -82,7 +83,7 @@ function parseComments(comments, options) {
             board: comment.data.board.name,
             card: comment.data.card.name,
             date: comment.date.slice(0, 10),
-            text: buildCommentText(comment.data.text),
+            text: buildCommentText(comment.data.text, options.truncationLength),
             link: buildLinkToComment(comment)
         };
     }
@@ -95,8 +96,15 @@ function getStartOfCurrentQuarter() {
     return moment().startOf("quarter").format("YYYY-MM-DD");
 }
 
-function buildCommentText(markdown) {
-    return markdownit().render(markdown);
+function buildCommentText(markdown, truncationLength) {
+    return markdownit().render(buildTruncatedText());
+
+    function buildTruncatedText() {
+        if (! truncationLength) { return markdown; }
+        const lines = markdown.split("\n");
+        if (lines.length <= truncationLength) { return markdown; }
+        return markdown.split("\n").slice(0, truncationLength).join("\n") + "\n\n[...]";
+    }
 }
 function buildLinkToComment(comment) {
     return `${TRELLO_BASE_URL}/c/${comment.data.card.shortLink}#action-${comment.id}`;

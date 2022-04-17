@@ -62,6 +62,11 @@
                                 <input id="limit" type="number" placeholder="100" v-model="options.limit">
                                 <span>(1000 is the maximum allowed by Trello)</span>
                             </div>
+                            <div class="form-field">
+                                <label for="truncationLength" class="field-name">Truncate comments to N lines?</label>
+                                <input id="truncationLength" type="number" placeholder="5" v-model="options.truncationLength">
+                                <span>(Leave empty to display the full comments)</span>
+                            </div>
                             <br>
                             <div class="form-field">
                                 <input id="excludeScopes" type="checkbox" v-model="options.excludedBoards.scopes">
