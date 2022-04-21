@@ -21,6 +21,7 @@ new Vue({
         },
         error: null,
         loading: false,
+        search: "",
         sort: { field: "date", ascending: false },
         trelloCredentialsHelperFile: TRELLO_CREDENTIALS_HELPER_FILE,
         credentials: {
@@ -30,6 +31,17 @@ new Vue({
         username: ""
     },
     computed: {
+        filteredComments() {
+            const search = this.search.toLowerCase();
+
+            return this.comments.filter(comment => {
+                return (
+                    comment.board.toLowerCase().includes(search) ||
+                    comment.card.toLowerCase().includes(search) ||
+                    comment.originalText.toLowerCase().includes(search)
+                );
+            });
+        },
         isSubmitButtonDisabled() {
             return ! this.isValid || this.loading;
         },
@@ -90,6 +102,7 @@ function parseComments(comments, options) {
             board: comment.data.board.name,
             card: comment.data.card.name,
             date: comment.date.slice(0, 10),
+            originalText: comment.data.text,
             text: buildCommentText(comment.data.text, options.truncationLength),
             link: buildLinkToComment(comment)
         };

@@ -107,7 +107,10 @@
                         </template>
 
                         <div v-if="comments">
-                            <h2>Results ({{ comments.length }} comments found)</h2>
+                            <h2>Results ({{ filteredComments.length }} comments found)</h2>
+
+                            <input id="search" type="text" placeholder="Filter results" v-model="search">
+                            <hr>
 
                             <table>
                                 <thead>
@@ -137,7 +140,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="comment in comments">
+                                    <tr v-for="comment in filteredComments">
                                         <td>{{ comment.date }}</td>
                                         <td>{{ comment.board }}</td>
                                         <td><a :href="comment.link" target="_blank">{{ comment.card }}</a></td>
