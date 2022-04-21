@@ -1,0 +1,45 @@
+.direction-column {
+    flex-direction: column;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout:fixed;
+}
+
+table, th, td {
+    border: 1px solid;
+    padding: 8px;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: normal;
+    overflow-wrap: anywhere;
+}
+
+.column-date {
+    width: 100px;
+}
+
+.column-board {
+    width: 200px;
+}
+
+.column-card {
+    width: 200px;
+}
+
+.rendered-markdown p {
+    font-size: inherit;
+}
+
+.sorting-arrows {
+    float: right;
+}
+
+.sorting-arrows > span {
+    cursor: pointer;
+}

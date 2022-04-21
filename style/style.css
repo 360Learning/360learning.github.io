@@ -90,7 +90,7 @@ html, body
 .field-name
 {
     display: inline-block;
-    width: 150px;
+    width: 250px;
     font-size: 13px;
     font-weight: 600;
 }
@@ -99,10 +99,13 @@ input, select
 {
     padding: 9px;
     border: 1px solid #eeeeee;
-    width: 340px;
     border-radius: 4px;
     margin: 2px 0;
     box-sizing: border-box;
+}
+
+input:not([type=checkbox]) {
+    width: 340px;
 }
 
 input:focus, select:focus
