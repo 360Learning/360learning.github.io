@@ -7,151 +7,149 @@
         <link rel="stylesheet" type="text/css" href="./style/trelloCommentsDashboard.css">
     </head>
     <body>
-        <div>
-            <div id="app">
-                <div id="header">
-                    <div class="container">
-                        <a id="logo" href="index.html">360Tools</a>
-                    </div>
-                </div>
+        <div id="app">
+            <div id="header">
                 <div class="container">
-                    <h1>Trello comments dashboard</h1>
+                    <a id="logo" href="index.html">360Tools</a>
+                </div>
+            </div>
+            <div class="container">
+                <h1>Trello comments dashboard</h1>
 
 
-                    <div class="element form">
+                <div class="element form">
 
-                        It's Performance Reviews time, and you want to see all the comments made by your reviewee during the period? 🕵️
-                        <br>You're desperately looking for a comment made by someone in particular, but the Trello search won't let you find it? 👺
+                    It's Performance Reviews time, and you want to see all the comments made by your reviewee during the period? 🕵️
+                    <br>You're desperately looking for a comment made by someone in particular, but the Trello search won't let you find it? 👺
 
-                        <hr>
+                    <hr>
 
-                        <br>To get started, get your <a target="_blank" :href="trelloCredentialsHelperFile">Trello API information</a> and store carefully your identifier and authentication token.
-                        <br>This tool will fetch your colleague's Trello comments on your behalf.
-                        <br>Don't worry, the information will not be stored by this website in any way.
+                    <br>To get started, get your <a target="_blank" :href="trelloCredentialsHelperFile">Trello API information</a> and store carefully your identifier and authentication token.
+                    <br>This tool will fetch your colleague's Trello comments on your behalf.
+                    <br>Don't worry, the information will not be stored by this website in any way.
 
-                        <hr>
+                    <hr>
 
-                        <div class="form-wrapper direction-column">
-                            <div class="form-field">
-                                <label for="trelloApiKey" class="field-name">Trello identifier:</label>
-                                <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
-                            </div>
-                            <div class="form-field">
-                                <label for="trelloOAuth1" class="field-name">Authentication token:</label>
-                                <input id="trelloOAuth1" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloOAuth1">
-                            </div>
-                            <div class="form-field">
-                                <label for="username" class="field-name">Your colleague's username:</label>
-                                <input id="username" type="text" placeholder="thomasrice" v-model="username" @keyup.enter="fetchComments()">
-                            </div>
+                    <div class="form-wrapper direction-column">
+                        <div class="form-field">
+                            <label for="trelloApiKey" class="field-name">Trello identifier:</label>
+                            <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
+                        </div>
+                        <div class="form-field">
+                            <label for="trelloOAuth1" class="field-name">Authentication token:</label>
+                            <input id="trelloOAuth1" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloOAuth1">
+                        </div>
+                        <div class="form-field">
+                            <label for="username" class="field-name">Your colleague's username:</label>
+                            <input id="username" type="text" placeholder="thomasrice" v-model="username" @keyup.enter="fetchComments()">
+                        </div>
 
-                            <h2>Settings</h2>
+                        <h2>Settings</h2>
 
-                            <div class="form-field">
-                                <label for="since" class="field-name">Start date</label>
-                                <input id="since" type="date" placeholder="YYYY-MM-DD" v-model="options.since">
-                                <span>(included)</span>
-                            </div>
-                            <div class="form-field">
-                                <label for="before" class="field-name">End date</label>
-                                <input id="before" type="date" placeholder="YYYY-MM-DD" v-model="options.before">
-                                <span>(excluded)</span>
-                            </div>
-                            <div class="form-field">
-                                <label for="limit" class="field-name">Limit to N comments?</label>
-                                <input id="limit" type="number" placeholder="100" v-model="options.limit">
-                                <span>(1000 is the maximum allowed by Trello)</span>
-                            </div>
-                            <div class="form-field">
-                                <label for="truncationLength" class="field-name">Truncate comments to N lines?</label>
-                                <input id="truncationLength" type="number" placeholder="5" v-model="options.truncationLength">
-                                <span>(Leave empty to display the full comments)</span>
-                            </div>
-                            <br>
-                            <div class="form-field">
-                                <input id="excludeScopes" type="checkbox" v-model="options.excludedBoards.scopes">
-                                <label for="excludeScopes" class="field-name">Exclude <em>Scopes</em> board?</label>
-                            </div>
-                            <br>
-                            <div class="form-field">
-                                <input id="excludeHRCUPaths" type="checkbox" v-model="options.excludedBoards.HRCUPaths">
-                                <label for="excludeHRCUPaths" class="field-name">Exclude <em>HR: CU Paths</em> board?</label>
-                            </div>
-                            <br>
-                            <div class="form-field">
-                                <input id="excludeZConvexity" type="checkbox" v-model="options.excludedBoards.zConvexity">
-                                <label for="excludeZConvexity" class="field-name">Exclude <em>zConvexity</em> boards?</label>
-                            </div>
+                        <div class="form-field">
+                            <label for="since" class="field-name">Start date</label>
+                            <input id="since" type="date" placeholder="YYYY-MM-DD" v-model="options.since">
+                            <span>(included)</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="before" class="field-name">End date</label>
+                            <input id="before" type="date" placeholder="YYYY-MM-DD" v-model="options.before">
+                            <span>(excluded)</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="limit" class="field-name">Limit to N comments?</label>
+                            <input id="limit" type="number" placeholder="100" v-model="options.limit">
+                            <span>(1000 is the maximum allowed by Trello)</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="truncationLength" class="field-name">Truncate comments to N lines?</label>
+                            <input id="truncationLength" type="number" placeholder="5" v-model="options.truncationLength">
+                            <span>(Leave empty to display the full comments)</span>
                         </div>
                         <br>
-                        <button
-                                class="button wide"
-                                :class="{ disabled: isSubmitButtonDisabled }"
-                                :disabled="isSubmitButtonDisabled"
-                                @click="fetchComments()"
-                        >
-                            <template v-if="loading">Fetching comments...</template>
-                            <template v-else>Fetch comments</template>
-                        </button>
+                        <div class="form-field">
+                            <input id="excludeScopes" type="checkbox" v-model="options.excludedBoards.scopes">
+                            <label for="excludeScopes" class="field-name">Exclude <em>Scopes</em> board?</label>
+                        </div>
                         <br>
-
-                        <template v-if="error">
-                            An error occurred: <strong>{{ error }}</strong>
-                            <br>
-                            <template v-if="error.includes('404')">
-                                The username you entered may be incorrect.
-                            </template>
-                            <template v-else-if="error.includes('401')">
-                                The identifier or token you entered may be incorrect.
-                            </template>
-                        </template>
-
-                        <div v-if="comments">
-                            <h2>Results ({{ filteredComments.length }} comments found)</h2>
-
-                            <input id="search" type="text" placeholder="Filter results" v-model="search">
-                            <hr>
-
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="column-date">
-                                            Date
-                                            <div class="sorting-arrows">
-                                                <span @click="updateSort({ field: 'date', ascending: true })">⬆️</span>
-                                                <span @click="updateSort({ field: 'date', ascending: false })">⬇️</span>
-                                            </div>
-                                        </th>
-                                        <th class="column-card">
-                                            Board
-                                            <div class="sorting-arrows">
-                                                <span @click="updateSort({ field: 'board', ascending: true })">⬆️</span>
-                                                <span @click="updateSort({ field: 'board', ascending: false })">⬇️</span>
-                                            </div>
-                                        </th>
-                                        <th class="column-card">
-                                            Card
-                                            <div class="sorting-arrows">
-                                                <span @click="updateSort({ field: 'card', ascending: true })">⬆️</span>
-                                                <span @click="updateSort({ field: 'card', ascending: false })">⬇️</span>
-                                            </div>
-                                        </th>
-                                        <th class="column-comment">Comment</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="comment in filteredComments">
-                                        <td>{{ comment.date }}</td>
-                                        <td>{{ comment.board }}</td>
-                                        <td><a :href="comment.link" target="_blank">{{ comment.card }}</a></td>
-                                        <td class="rendered-markdown" v-html="comment.text"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="form-field">
+                            <input id="excludeHRCUPaths" type="checkbox" v-model="options.excludedBoards.HRCUPaths">
+                            <label for="excludeHRCUPaths" class="field-name">Exclude <em>HR: CU Paths</em> board?</label>
+                        </div>
+                        <br>
+                        <div class="form-field">
+                            <input id="excludeZConvexity" type="checkbox" v-model="options.excludedBoards.zConvexity">
+                            <label for="excludeZConvexity" class="field-name">Exclude <em>zConvexity</em> boards?</label>
                         </div>
                     </div>
                     <br>
+                    <button
+                            class="button wide"
+                            :class="{ disabled: isSubmitButtonDisabled }"
+                            :disabled="isSubmitButtonDisabled"
+                            @click="fetchComments()"
+                    >
+                        <template v-if="loading">Fetching comments...</template>
+                        <template v-else>Fetch comments</template>
+                    </button>
+                    <br>
+
+                    <template v-if="error">
+                        An error occurred: <strong>{{ error }}</strong>
+                        <br>
+                        <template v-if="error.includes('404')">
+                            The username you entered may be incorrect.
+                        </template>
+                        <template v-else-if="error.includes('401')">
+                            The identifier or token you entered may be incorrect.
+                        </template>
+                    </template>
+
+                    <div v-if="comments">
+                        <h2>Results ({{ filteredComments.length }} comments found)</h2>
+
+                        <input id="search" type="text" placeholder="Filter results" v-model="search">
+                        <hr>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="column-date">
+                                        Date
+                                        <div class="sorting-arrows">
+                                            <span @click="updateSort({ field: 'date', ascending: true })">⬆️</span>
+                                            <span @click="updateSort({ field: 'date', ascending: false })">⬇️</span>
+                                        </div>
+                                    </th>
+                                    <th class="column-card">
+                                        Board
+                                        <div class="sorting-arrows">
+                                            <span @click="updateSort({ field: 'board', ascending: true })">⬆️</span>
+                                            <span @click="updateSort({ field: 'board', ascending: false })">⬇️</span>
+                                        </div>
+                                    </th>
+                                    <th class="column-card">
+                                        Card
+                                        <div class="sorting-arrows">
+                                            <span @click="updateSort({ field: 'card', ascending: true })">⬆️</span>
+                                            <span @click="updateSort({ field: 'card', ascending: false })">⬇️</span>
+                                        </div>
+                                    </th>
+                                    <th class="column-comment">Comment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="comment in filteredComments">
+                                    <td>{{ comment.date }}</td>
+                                    <td>{{ comment.board }}</td>
+                                    <td><a :href="comment.link" target="_blank">{{ comment.card }}</a></td>
+                                    <td class="rendered-markdown" v-html="comment.text"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <br>
             </div>
         </div>
 
