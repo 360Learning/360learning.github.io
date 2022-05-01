@@ -32,11 +32,6 @@ html, body
     flex-direction: column;
 }
 
-.tool
-{
-    margin-bottom: 16px;
-}
-
 .element
 {
     border-radius: 4px;
