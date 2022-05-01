@@ -108,7 +108,11 @@
                     <div v-if="comments">
                         <h2>Results ({{ filteredComments.length }} comments found)</h2>
 
-                        <input id="search" type="text" placeholder="Filter results" v-model="search">
+                        <div class="results-toolbar">
+                            <input id="search" type="text" placeholder="Filter results" v-model="search">
+                            <button @click="copyCsvToClipboard()">Copy as CSV to clipboard</button>
+                            <button @click="downloadCsvFile()">Download as CSV</button>
+                        </div>
                         <hr>
 
                         <table>

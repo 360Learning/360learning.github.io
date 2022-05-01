@@ -50,12 +50,48 @@ new Vue({
         }
     },
     methods: {
+        buildCsv() {
+            const header = [
+                "Date",
+                "Board",
+                "Card",
+                "Comment"
+            ];
+            const rows = this.filteredComments.map((comment) => ([
+                comment.date,
+                escape(comment.board),
+                `=HYPERLINK("${comment.link}";${escape(comment.card)})`,
+                escape(comment.originalText)
+            ]));
+            return [header, ...rows].map(row => row.join("\t")).join("\n");
+
+            function escape(value) {
+                return `"${value.replaceAll('"', '""')}"`;
+            }
+        },
         buildOptions() {
             return {
                 limit: Math.min(this.options.limit ?? 1000, 1000),
                 ...(this.options.since ? { since: this.options.since } : {}),
                 ...(this.options.before ? { before: this.options.before } : {})
             }
+        },
+        async copyCsvToClipboard() {
+            const csv = this.buildCsv();
+            await navigator.clipboard.writeText(csv);
+        },
+        downloadCsvFile() {
+            const csv = this.buildCsv();
+
+            const dummyElement = document.createElement("a");
+            const exportDate = moment().format("YYYY-MM-DD");
+            dummyElement.setAttribute("href", `data:text/csv;charset=utf-8,${encodeURIComponent(csv)}`);
+            dummyElement.setAttribute("download", `Trello comments export ${this.username} ${exportDate}.csv`);
+            dummyElement.style.display = "none";
+
+            document.body.appendChild(dummyElement);
+            dummyElement.click();
+            document.body.removeChild(dummyElement);
         },
         async fetchComments() {
             this.comments = null;
