@@ -106,12 +106,12 @@ input:focus, select:focus
     border: 1px solid #9e9e9e;
 }
 
-button, .wide
+button.wide
 {
     width: 400px;
 }
 
-button, .with-margin
+button.with-margin
  {
      margin: 8px auto !important;
  }
