@@ -1,5 +1,6 @@
 const TRELLO_BASE_URL = "https://trello.com";
 const TRELLO_CREDENTIALS_HELPER_FILE = "https://docs.google.com/document/d/1HwaedNa861gkj93TaradW5n0MID8cbeamiU5SXCvX64/edit#heading=h.ijjo2dol5z6v"
+const GOOGLE_SHEETS_EXPORT_TEMPLATE = "https://docs.google.com/spreadsheets/d/1gAbqE94JWzFgeq6Q7DwCjlTb7NQtsIEzCtOS8pyFBBA/edit#gid=0"
 const SCOPES_BOARD_NAME = "2. Scopes";
 const HR_CU_PATHS_BOARD_NAME = "HR: CU Paths";
 const ZCONVEXITY_BOARDS_PREFIX = "zConvexity";
@@ -24,6 +25,7 @@ new Vue({
         search: "",
         sort: { field: "date", ascending: false },
         trelloCredentialsHelperFile: TRELLO_CREDENTIALS_HELPER_FILE,
+        googleSheetsExportTemplate: GOOGLE_SHEETS_EXPORT_TEMPLATE,
         credentials: {
             trelloApiKey: "",
             trelloOAuth1: ""

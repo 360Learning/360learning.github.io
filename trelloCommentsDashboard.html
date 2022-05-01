@@ -108,6 +108,13 @@
                     <div v-if="comments">
                         <h2>Results ({{ filteredComments.length }} comments found)</h2>
 
+                        💡 If you want to keep a trace of these results or analyze them further, you can make a copy of this <a :href="googleSheetsExportTemplate">Google Sheets template</a>.
+                        <ul>
+                            <li>Copy the comments to the clipboard using the button below</li>
+                            <li>Select the first cell of the spreadsheet</li>
+                            <li>Paste the comments (Cmd / Ctrl + V), and voilà ✨</li>
+                        </ul>
+
                         <div class="results-toolbar">
                             <input id="search" type="text" placeholder="Filter results" v-model="search">
                             <button @click="copyCsvToClipboard()">Copy as CSV to clipboard</button>
