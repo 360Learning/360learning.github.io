@@ -10,8 +10,8 @@ new Vue({
     data: {
         comments: null,
         options: {
-            before: getStartOfCurrentQuarter(),
-            since: getStartOfPreviousQuarter(),
+            before: undefined,
+            since: undefined,
             limit: 1000,
             excludedBoards: {
                 scopes: true,
@@ -145,13 +145,6 @@ function parseComments(comments, options) {
             link: buildLinkToComment(comment)
         };
     }
-}
-
-function getStartOfPreviousQuarter() {
-    return moment().startOf("quarter").subtract(3, "months").format("YYYY-MM-DD");
-}
-function getStartOfCurrentQuarter() {
-    return moment().startOf("quarter").format("YYYY-MM-DD");
 }
 
 function buildCommentText(markdown, truncationLength) {
