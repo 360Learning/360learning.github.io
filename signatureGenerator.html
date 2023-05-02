@@ -24,7 +24,7 @@
             </ol>
             <div class="form-field">
                 <label for="mail" class="field-name" >Mail :</label>
-                <input id="mail" type="email" placeholder="hugo.attal@360learning.com" v-model="mail" @keyup.enter="importData">
+                <input id="mail" type="email" placeholder="marta.lisboa@360learning.com" v-model="mail" @keyup.enter="importData">
             </div>
             <br>
             <button class="button" @click="importData">
@@ -36,15 +36,15 @@
             <div class="form-wrapper">
                 <div class="form-field">
                     <label for="firstName" class="field-name">First name :</label>
-                    <input id="firstName" type="text" placeholder="Hugo" v-model="firstName">
+                    <input id="firstName" type="text" placeholder="Marta" v-model="firstName">
                 </div>
                 <div class="form-field">
                     <label for="lastName" class="field-name">Last name :</label>
-                    <input id="lastName" type="text" placeholder="Attal" v-model="lastName">
+                    <input id="lastName" type="text" placeholder="Lisboa" v-model="lastName">
                 </div>
                 <div class="form-field">
                     <label for="jobTitle" class="field-name">Job title :</label>
-                    <input id="jobTitle" type="text" placeholder="Software Designer" v-model="jobTitle">
+                    <input id="jobTitle" type="text" placeholder="Head of Brand" v-model="jobTitle">
                 </div>
                 <div class="form-field">
                     <label for="photoLink" class="field-name">Photo link :</label>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-field">
                     <label for="phoneNumber" class="field-name">Phone number :</label>
-                    <input id="phoneNumber" type="text" placeholder="+336 73 49 75 00 (optional)" v-model="phoneNumber">
+                    <input id="phoneNumber" type="text" placeholder="+33 7 78 39 15 82 (optional)" v-model="phoneNumber">
                 </div>
             </div>
             <br>
@@ -64,8 +64,8 @@
             </button>
         </div>
         <br>
-        <div id="render" class="element" @select="preventBadCopy">
-            <table style="border-collapse: collapse;border-spacing: 0;font-family:Arial,sans-serif;font-size:12px; color:#57586E;">
+        <div id="render" class="element" @select="preventBadCopy" style="background-image: url('https://360learning.github.io/assets/background-start.png'), url(https://360learning.github.io/assets/background-end.png); background-repeat: no-repeat; background-size: contain, cover;">
+            <table style="border-collapse: collapse; border-spacing: 0; font-family: 'Helvetica', 'Arial', sans-serif; font-size:14px; line-height: 22px;">
                 <tr>
                     <td>
                         <table style="border-collapse: collapse;border-spacing: 0;height: 60px; width: 100px;">
@@ -83,55 +83,34 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <a href="https://www.facebook.com/360LearningSuite"
-                                    ><img alt="Facebook"
-                                        src="https://360learning.github.io/assets/facebook.png"
-                                        style="width: 20px;"></a>
-                                    <a href="https://twitter.com/360learning"
-                                    ><img alt="Twitter"
-                                        src="https://360learning.github.io/assets/twitter.png"
-                                        style="width: 20px;margin-left: 2px;"></a>
                                     <a href="https://www.linkedin.com/company/360learning/"
                                     ><img alt="LinkedIn"
                                         src="https://360learning.github.io/assets/linkedin.png"
                                         style="width: 20px; height: 20px;margin-left: 2px;"></a>
+                                    <a href="https://twitter.com/360learning"
+                                    ><img alt="Twitter"
+                                        src="https://360learning.github.io/assets/twitter.png"
+                                        style="width: 20px;margin-left: 2px;"></a>
                                     <a href="https://www.instagram.com/360learningsuite/"
                                     ><img alt="Instagram"
                                         src="https://360learning.github.io/assets/instagram.png"
                                         style="width: 20px; height: 20px;margin-left: 2px;"></a>
+                                    <a href="https://www.facebook.com/360LearningSuite"
+                                    ><img alt="Facebook"
+                                        src="https://360learning.github.io/assets/facebook.png"
+                                        style="width: 20px;"></a>
                                 </td>
                             </tr>
                         </table>
                     </td>
-                    <td style="vertical-align: top;padding-left:20px;">
-                        <div style="color:#000000;">
-                            <span style="font-size:16px; font-weight: bold; color:#57586E;line-height: 26px;">{{ firstNameGen }} {{ lastNameGen }}</span><br>
-                            <span style="color:#57586E;line-height: 18px;">{{ jobTitleGen }}</span><br>
-                            <span style="color:#57586E;line-height: 18px;">360Learning - Experience Learning Together</span>
+                    <td style="vertical-align: top;padding-left:30px;">
+                        <div style="color:#000000; margin-bottom: 22px">
+                            <span style="font-weight: bold; color:#18191D;">{{ firstNameGen }} {{ lastNameGen }}</span><br>
+                            <span style="color:#18191D;">{{ jobTitleGen }}</span><br>
+                            <span style="color:#18191D;">360Learning - Upskill from within</span>
                         </div>
-                        <hr style="border: none; border-top: 1px solid #4286ED; margin: 10px 0" />
-                        <table>
-                            <tr v-if="phoneNumber">
-                                <td style="width: 30px; height: 25px">
-                                    <img alt="Phone"
-                                        src="https://360learning.github.io/assets/phone.png"
-                                        style="width:13px;">
-                                </td>
-                                <td>
-                                    <a :href="phoneNumberHref" style="color:#57586E;text-decoration: none">{{ phoneNumber }}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 30px; height: 25px">
-                                    <img alt="Hyperlink"
-                                        src="https://360learning.github.io/assets/hyperlink.png"
-                                        style="width:13px;">
-                                </td>
-                                <td>
-                                    <a href="https://360learning.com" style="color:#57586E;text-decoration: none">www.360learning.com</a>
-                                </td>
-                            </tr>
-                        </table>
+                        <a :href="phoneNumberHref" style="color:#18191D;font-weight: normal;">{{ phoneNumber }}</a><br>
+                        <a href="https://360learning.com" style="color:#18191D;font-weight: normal;">www.360learning.com</a>
                     </td>
                 </tr>
             </table>
