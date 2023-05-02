@@ -85,16 +85,16 @@ var app = new Vue({
             return baseLink[this.linksType].second[1];
         },
         firstNameGen: function () {
-            return this.firstName || "Hugo";
+            return this.firstName || "Marta";
         },
         lastNameGen: function () {
-            return this.lastName || "Attal";
+            return this.lastName || "Lisboa";
         },
         jobTitleGen: function () {
-            return this.jobTitle || "Software Designer";
+            return this.jobTitle || "Head of Brand";
         },
         photoLinkGen: function () {
-            return this.photoLink || "https://team.360learning.com/api/medias/user/5c8f8244a651986f49906009";
+            return this.photoLink || "https://i.ibb.co/4YBpW4g/1672512163862-1.png";
         },
         phoneNumberHref: function () {
             return "tel:" +  this.phoneNumber.replace(/\s/g, '');
