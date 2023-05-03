@@ -2,15 +2,6 @@ String.prototype.cleanup = function() {
     return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-");
 };
 
-function loadData(data)
-{
-    app.firstName = data.firstName;
-    app.lastName = data.lastName;
-    app.jobTitle = data.job;
-    app.photoLink = "https://team.360learning.com/api/medias/user/" + data._id;
-    console.log(data);
-}
-
 const baseLink = [
     {
         first: ["https://en.360learning.com/signup", "Start a free trial"],
@@ -115,12 +106,6 @@ var app = new Vue({
         preventBadCopy: function (event)
         {
             alert("Please, use the \"Copy signature into clipboard\" big blue button 🙂 !\n\n (If you use the context menu, your signature might be badly injured 💀)");
-        },
-        importData: async function(event)
-        {
-            const jsonpTag = document.createElement("script");
-            jsonpTag.src = "https://sales.360mooc.com/api/webext/unsafeJSONP/users360/mail/" + this.mail +"?callback=loadData";
-            document.querySelector("head").appendChild(jsonpTag);
         }
     }
 });
