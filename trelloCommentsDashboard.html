@@ -24,7 +24,7 @@
 
                     <hr>
 
-                    <br>To get started, get your <a target="_blank" :href="trelloCredentialsHelperFile">Trello API information</a> and store carefully your identifier and authentication token.
+                    <br>To get started, get your <a target="_blank" :href="trelloCredentialsHelperFile">Trello API information</a> and make sure to have your API key and authentication token.
                     <br>This tool will fetch your colleague's Trello comments on your behalf.
                     <br>Don't worry, the information will not be stored by this website in any way.
 
@@ -32,7 +32,7 @@
 
                     <div class="form-wrapper direction-column">
                         <div class="form-field">
-                            <label for="trelloApiKey" class="field-name">Trello identifier:</label>
+                            <label for="trelloApiKey" class="field-name">Trello API key:</label>
                             <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
                         </div>
                         <div class="form-field">
