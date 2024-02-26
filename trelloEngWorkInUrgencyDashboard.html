@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>360Tools - Trello engineering work in urgency dashboard</title>
+        <link rel="stylesheet" type="text/css" href="./style/style.css">
+        <style>
+            .direction-column {
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <div id="header">
+                <div class="container">
+                    <a id="logo" href="index.html">360Tools</a>
+                </div>
+            </div>
+            <div class="container">
+                <h1>Trello engineering work in urgency dashboard</h1>
+
+                <div class="element form">
+
+                    Platform squads sometimes need to work in urgency a/o out of usual development process. 🏃 🚧
+                    <br>This dashboard will help you to get some metrics about it.
+
+                    <hr>
+
+                    <br>To get started, get your <a target="_blank" :href="trelloCredentialsHelperFile">Trello API information</a> and make sure to have your API key and authentication token.
+
+                    <hr>
+
+                    <div class="form-wrapper direction-column">
+                        <div class="form-field">
+                            <label for="trelloApiKey" class="field-name">Trello API key:</label>
+                            <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
+                        </div>
+                        <div class="form-field">
+                            <label for="trelloOAuth1" class="field-name">Authentication token:</label>
+                            <input id="trelloOAuth1" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloOAuth1">
+                        </div>
+
+                        <br>
+                        <button
+                            class="button wide"
+                            :class="{ disabled: isAccessButtonDisabled }"
+                            :disabled="isAccessButtonDisabled"
+                            v-if="! squadNames"
+                            @click="fetchSquadNames()"
+                         >
+                        <template v-if="loading">fetching squad names ...</template>
+                        <template v-else>Access dashboard</template>
+                        </button>
+                        <br>
+
+                        <div v-if="squadNames">
+
+                            <h2>Settings</h2>
+
+                            <div class="form-field">
+                                <label for="quarter" class="field-name">Quarter</label>
+                                <select name="quarters" v-model="options.quarter">
+                                    <option value="Q4 2023">Q4 2023</option>
+                                    <option value="Q1 2024">Q1 2024</option>
+                                    <option value="Q2 2024">Q2 2024</option>
+                                    <option value="Q3 2024">Q3 2024</option>
+                                    <option value="Q4 2024">Q4 2024</option>
+                                    <option value="Q1 2025">Q1 2025</option>
+                                    <option value="Q1 2025">Q2 2025</option>
+                                    <option value="Q1 2025">Q3 2025</option>
+                                    <option value="Q1 2025">Q4 2025</option>
+                                </select>
+                            </div>
+                            <div class="form-field">
+                                <label for="squad" class="field-name">Squad</label>
+                                <select name="squads" v-model="options.squad">
+                                    <option value="*">All squads</option>
+                                    <option v-for="squadName in squadNames" :value="squadName">
+                                        {{ squadName }}
+                                      </option>
+                                </select>
+                            </div>
+
+                            <br>
+                            <button
+                                class="button wide"
+                                :class="{ disabled: isSubmitButtonDisabled }"
+                                :disabled="isSubmitButtonDisabled"
+                                @click="buildReport()"
+                            >
+                            <template v-if="loading">building report...</template>
+                            <template v-else>Build report</template>
+                            </button>
+                            <br>
+                        </div>
+                    </div>
+
+                    <template v-if="error">
+                        An error occurred: <strong>{{ error }}</strong>
+                        <br>
+                        <template v-if="error.includes('401')">
+                            The API Key or token you entered may be incorrect.
+                        </template>
+                    </template>
+
+                    <template v-if="reportBuilt">
+                        <h2>Report</h2>
+
+                        <template v-if="reportBuildForAllSquads">
+                            <h3>Total number of occurrences in {{ options.quarter }} : {{ Object.values(urgencyCardsBySquadName).flat().length }}</h3>
+                            <hr>
+                        </template>
+                        
+                        <ul class="{ list-style-type: none }">
+                            <li v-for="(urgencyCards, selectedSquadName) in urgencyCardsBySquadName" class="{ list-style-type: none }">
+                                <details>
+                                    <summary>Squad {{ selectedSquadName }} in {{ options.quarter }} has {{ urgencyCards.length }} occurence{{ urgencyCards.length > 1 ? 's' : '' }}.</summary>
+                                    <br>
+                                    <ul>
+                                        <li v-for="urgencyCard in urgencyCards">
+                                            <a target="_blank" :href="urgencyCard.url">{{ urgencyCard.name }}</a>
+                                        </li>
+                                    </ul>
+                                </details>
+                                <br>
+                            </li>   
+                        </ul>
+                    </template>
+                </div>
+                <br>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="./scripts/trello/api.js"></script>
+        <script src="./scripts/trello/lists.js"></script>
+        <script src="./scripts/trelloEngWorkInUrgencyDashboard.js"></script>
+    </body>
+</html>
