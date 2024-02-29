@@ -34,6 +34,10 @@ new Vue({
         },
         isSubmitButtonDisabled() {
             return ! this.areCredentialsValid || this.loading || ! this.options.squad || ! this.options.quarter;
+        },
+        quarters() {
+            const currentQuarter = moment().quarter();
+            return [-3, -2, -1, 0].map(quarterOffset => moment().quarter(currentQuarter + quarterOffset).format("[Q]Q YYYY"));
         }
     },
     methods: {
@@ -57,7 +61,7 @@ new Vue({
         async buildReportForSquad(squadName) {
             const listId = this.listIdBySquadName[squadName];
             const cards = await fetchCardsInList(listId, this.credentials);
-            const filteredCards = cards.filter(card => ! card.isTemplate && card.labels.map(label => label.name).includes(this.options.quarter));
+            const filteredCards = cards.filter(card => ! card.isTemplate && card.labels.map(label => label.name.replace("-", " ")).includes(this.options.quarter));
             this.urgencyCardsBySquadName[squadName] = filteredCards.map(({name, url}) => ({ name, url }));
         },
         async fetchSquadNames() {

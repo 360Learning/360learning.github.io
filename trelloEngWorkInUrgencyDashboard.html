@@ -61,15 +61,9 @@
                             <div class="form-field">
                                 <label class="field-name">Quarter</label>
                                 <select name="quarters" v-model="options.quarter">
-                                    <option value="Q4 2023">Q4 2023</option>
-                                    <option value="Q1 2024">Q1 2024</option>
-                                    <option value="Q2 2024">Q2 2024</option>
-                                    <option value="Q3 2024">Q3 2024</option>
-                                    <option value="Q4 2024">Q4 2024</option>
-                                    <option value="Q1 2025">Q1 2025</option>
-                                    <option value="Q1 2025">Q2 2025</option>
-                                    <option value="Q1 2025">Q3 2025</option>
-                                    <option value="Q1 2025">Q4 2025</option>
+                                    <option v-for="quarter in quarters" :value="quarter">
+                                        {{ quarter }}
+                                      </option>
                                 </select>
                             </div>
                             <div class="form-field">
@@ -134,6 +128,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://momentjs.com/downloads/moment.js"></script>
         <script src="./scripts/trello/api.js"></script>
         <script src="./scripts/trello/lists.js"></script>
         <script src="./scripts/trelloEngWorkInUrgencyDashboard.js"></script>
