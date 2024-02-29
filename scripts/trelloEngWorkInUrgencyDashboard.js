@@ -2,6 +2,7 @@ const TRELLO_BASE_URL = "https://trello.com";
 const TRELLO_CREDENTIALS_HELPER_FILE = "https://docs.google.com/document/d/1HwaedNa861gkj93TaradW5n0MID8cbeamiU5SXCvX64/edit#heading=h.ijjo2dol5z6v"
 
 const LIST_IDS = [
+    "65e07588569c27c0664edf17",
     "65d8c6c2bdf8fb6ece5c3288"
 ]
 
