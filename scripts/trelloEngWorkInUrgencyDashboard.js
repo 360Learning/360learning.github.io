@@ -64,7 +64,7 @@ new Vue({
             this.error = null;
             this.loading = true;
             try {
-                this.squadNames = await Promise.all(LIST_IDS.map(this.getSquadNameFromListId));
+                this.squadNames = (await Promise.all(LIST_IDS.map(this.getSquadNameFromListId))).sort();
             }
             catch (error) {
                 this.error = error.message;
