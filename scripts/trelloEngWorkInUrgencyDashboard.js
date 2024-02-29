@@ -26,14 +26,14 @@ new Vue({
         reportBuildForAllSquads: false
     },
     computed: {
-        areCredentialsValid() {
+        areCredentialsFilled() {
             return !! this.credentials.trelloApiKey && !! this.credentials.trelloOAuth1;
         },
         isAccessButtonDisabled() {
-            return ! this.areCredentialsValid || this.loading;
+            return ! this.areCredentialsFilled || this.loading;
         },
         isSubmitButtonDisabled() {
-            return ! this.areCredentialsValid || this.loading || ! this.options.squad || ! this.options.quarter;
+            return ! this.areCredentialsFilled || this.loading || ! this.options.squad || ! this.options.quarter;
         },
         quarters() {
             const currentQuarter = moment().quarter();
