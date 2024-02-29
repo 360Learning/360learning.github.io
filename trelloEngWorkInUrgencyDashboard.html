@@ -33,11 +33,11 @@
 
                     <div class="form-wrapper direction-column">
                         <div class="form-field">
-                            <label for="trelloApiKey" class="field-name">Trello API key:</label>
+                            <label class="field-name">Trello API key:</label>
                             <input id="trelloApiKey" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloApiKey">
                         </div>
                         <div class="form-field">
-                            <label for="trelloOAuth1" class="field-name">Authentication token:</label>
+                            <label class="field-name">Authentication token:</label>
                             <input id="trelloOAuth1" type="text" placeholder="1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd" v-model="credentials.trelloOAuth1">
                         </div>
 
@@ -59,21 +59,15 @@
                             <h2>Settings</h2>
 
                             <div class="form-field">
-                                <label for="quarter" class="field-name">Quarter</label>
+                                <label class="field-name">Quarter</label>
                                 <select name="quarters" v-model="options.quarter">
-                                    <option value="Q4 2023">Q4 2023</option>
-                                    <option value="Q1 2024">Q1 2024</option>
-                                    <option value="Q2 2024">Q2 2024</option>
-                                    <option value="Q3 2024">Q3 2024</option>
-                                    <option value="Q4 2024">Q4 2024</option>
-                                    <option value="Q1 2025">Q1 2025</option>
-                                    <option value="Q1 2025">Q2 2025</option>
-                                    <option value="Q1 2025">Q3 2025</option>
-                                    <option value="Q1 2025">Q4 2025</option>
+                                    <option v-for="quarter in quarters" :value="quarter">
+                                        {{ quarter }}
+                                      </option>
                                 </select>
                             </div>
                             <div class="form-field">
-                                <label for="squad" class="field-name">Squad</label>
+                                <label class="field-name">Squad</label>
                                 <select name="squads" v-model="options.squad">
                                     <option value="*">All squads</option>
                                     <option v-for="squadName in squadNames" :value="squadName">
@@ -134,6 +128,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://momentjs.com/downloads/moment.js"></script>
         <script src="./scripts/trello/api.js"></script>
         <script src="./scripts/trello/lists.js"></script>
         <script src="./scripts/trelloEngWorkInUrgencyDashboard.js"></script>
