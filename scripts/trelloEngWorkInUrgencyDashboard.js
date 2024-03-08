@@ -2,7 +2,8 @@ const TRELLO_CREDENTIALS_HELPER_FILE = "https://docs.google.com/document/d/1Hwae
 
 const LIST_IDS = [
     "65e07588569c27c0664edf17",
-    "65d8c6c2bdf8fb6ece5c3288"
+    "65d8c6c2bdf8fb6ece5c3288",
+    "65eb3c3f18360ab17df520fd"
 ]
 
 new Vue({
