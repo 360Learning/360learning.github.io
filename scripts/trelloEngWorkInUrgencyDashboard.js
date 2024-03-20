@@ -1,9 +1,10 @@
 const TRELLO_CREDENTIALS_HELPER_FILE = "https://docs.google.com/document/d/1HwaedNa861gkj93TaradW5n0MID8cbeamiU5SXCvX64/edit#heading=h.ijjo2dol5z6v"
 
 const LIST_IDS = [
-    "65e07588569c27c0664edf17",
-    "65d8c6c2bdf8fb6ece5c3288",
-    "65eb3c3f18360ab17df520fd"
+    "65e07588569c27c0664edf17", // https://trello.com/c/rWgYEIaP Paths
+    "65d8c6c2bdf8fb6ece5c3288", // https://trello.com/c/FJrnjzoC Users & Groups
+    "65eb3c3f18360ab17df520fd", // https://trello.com/c/l4Qqa3lh Navigation
+    "65f86bf9394966aa2a03379f"  // https://trello.com/c/jym1mHmg API Connect
 ]
 
 new Vue({
